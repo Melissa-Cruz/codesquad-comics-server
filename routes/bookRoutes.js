@@ -3,57 +3,26 @@
 const express = require("express");
 const router = express.Router();
 
-
+const { getAllBooks, getBook, createBook, updateBook, deleteBook } = require("../controllers/bookController")
 
 // Cut all of the routes that begin with /api/books from the app.js and move them to the bookRoutes.js file.
 // PATH: /api/books, HANDLER: "This will send all of the book data"
-router.get(("/"), (request, response,next) =>{
-    // response.send("This will send all of the book data")
-    response.status(200).json({
-        success:{message:"This will send all of the book data"}, 
-        statusCode:200,
-    })
-
-});
+router.get(("/"), getAllBooks);
 
 // PATH: /api/books/:id, HANDLER:  "This will send a single book by its id"
-router.get(("/:id"), (request, response, next) =>{
-    // response.send("This will send a single book by its id")
-    response.status(200).json({
-        success:{message:"This will send a single book by its id"}, 
-        statusCode:200,
-    });
-});
+router.get(("/:id"), getBook);
 
 // PATH: /api/books/create/new, HANDLER: "This will create a new book"
 // it works if it's  router.get
-router.post(("/create/new"), (request, response, next) => {
-    // response.send("This will create a new book")
-    response.status(200).json({
-        success:{message:"This will create a new book"},
-        statusCode:200,
-    });
-});
+router.post(("/create/new"), createBook );
 
 // PATH: /api/books/update/:id, HANDLER: "This will update a book by its id"
 // it works if its router.get
-router.put(("/edit/:id"), (request, response, next) =>{
-    // response.send("This will update a book by its id")
-    response.status(200).json({
-        success:{message:"This will update a book by its id"}, 
-        statusCode:200,
-    });
-});
+router.put(("/edit/:id"),updateBook );
 
 // PATH: /api/books/delete/:id, HANDLER: "This will delete a book by its id" 
 //it works if its router.delete
-router.delete(("/delete/:id"), (request, response, next) => {
-    // response.send("This will delete a book by its id")
-    response.status(200).json({
-        success:{message:"This will delete a book by its id"},
-        statusCode:200,
-    });
-});
+router.delete(("/delete/:id"), deleteBook);
 
 
 
