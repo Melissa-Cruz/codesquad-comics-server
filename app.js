@@ -31,6 +31,14 @@ app.use(express.urlencoded({ extended: true}));
 
 
 ///-------------------------------SET UP GET ROUTES-------------------------
+const bookRoutes = require("./routes/bookRoutes");
+
+// Prepare the app file to move book routes into a new file
+app.use("/api/books", bookRoutes );
+
+
+
+
 // Create six basic GET routes with the following information using the .send() method and the request/response/next parameter:
 
 // PATH: /, HANDLER: "This route points to the Home page
@@ -42,53 +50,7 @@ app.get(("/"), (request, response, next) =>{
     });
 });
 
-// PATH: /api/books, HANDLER: "This will send all of the book data"
-app.get(("/api/books"), (request, response,next) =>{
-    // response.send("This will send all of the book data")
-    response.status(200).json({
-        success:{message:"This will send all of the book data"}, 
-        statusCode:200,
-    })
-
-});
-
-// PATH: /api/books/:id, HANDLER:  "This will send a single book by its id"
-app.get(("/api/books/:id"), (request, response, next) =>{
-    // response.send("This will send a single book by its id")
-    response.status(200).json({
-        success:{message:"This will send a single book by its id"}, 
-        statusCode:200,
-    });
-});
-
-// PATH: /api/books/create/new, HANDLER: "This will create a new book"
-app.get(("/api/books/create/new"), (request, response, next) => {
-    // response.send("This will create a new book")
-    response.status(200).json({
-        success:{message:"This will create a new book"},
-        statusCode:200,
-    });
-});
-
-// PATH: /api/books/update/:id, HANDLER: "This will update a book by its id"
-app.get(("/api/books/update/:id"), (request, response, next) =>{
-    // response.send("This will update a book by its id")
-    response.status(200).json({
-        success:{message:"This will update a book by its id"}, 
-        statusCode:200,
-    });
-});
-
-// PATH: /api/books/delete/:id, HANDLER: "This will delete a book by its id" 
-app.get(("/api/books/delete/:id"), (request, response, next) => {
-    // response.send("This will delete a book by its id")
-    response.status(200).json({
-        success:{message:"This will delete a book by its id"},
-        statusCode:200,
-    });
-});
-
-
+// Cut all of the routes that begin with /api/books from the app.js and move them to the bookRoutes.js file.
 
 //-----------------------------CONNECT THE APP TO THE PORT----------------------
 // use app.listen() to start the server and send a console.log to the terminal with a start message that says `The server is listening on port ${PORT}`
