@@ -26,8 +26,10 @@ const getBook = async (req, res, next) => {
   try {
     const book = booksData.find((book) => book._id === _id);
 
+
+
     return res.status(200).json({
-      success: { message: "This will send a single book by its id" },
+      success: { message: "This will get a single book by its id" },
       data: { book: book },
       statusCode: 200,
     });
@@ -82,8 +84,8 @@ const updateBook = async (req, res, next) => {
             pages, 
             rating, 
             synopsis, 
-            imageUrl 
-        }
+            imageUrl,
+        };
         return res.status(201).json({
             success:{message:"The book was updated"}, 
             data:{book:updatedBook},
