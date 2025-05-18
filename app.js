@@ -35,6 +35,8 @@ const bookRoutes = require("./routes/bookRoutes");
 
 // Prepare the app file to move book routes into a new file
 app.use("/api/books", bookRoutes );
+app.use("/api", authRoutes );
+
 
 
 
