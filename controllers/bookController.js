@@ -1,4 +1,3 @@
-const express = require("express");
 const booksData = require("../data/books");
 // idk why I'm putting async but it's in slide and demo
 const getAllBooks = async (req, res, next) => {
