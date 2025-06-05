@@ -1,11 +1,14 @@
-const booksData = require("../data/books");
+const Book = require("../models/bookModel");
+
+
+// static js file version -> const booksData = require("../data/books");
 // idk why I'm putting async but it's in slide and demo
 const getAllBooks = async (req, res, next) => {
   // response.send("This will send all of the book data")
 
   try {
     //the homework says to put it inside the try
-    const books = booksData;
+    const books = Book;
     return res.status(200).json({
       success: { message: "This will send all of the book data" },
       data: { books: books },
@@ -23,7 +26,7 @@ const getBook = async (req, res, next) => {
   const { _id } = req.params;
 
   try {
-    const book = booksData.find((book) => book._id === _id);
+    const book = Book.find((book) => book._id === _id);
 
 
 
@@ -105,7 +108,7 @@ const deleteBook = async (req, res, next) => {
     const { _id } = req.params;
 
     try{
-        const books = booksData.filter((book) = book._id !== _id);
+        const books = Book.filter((book) = book._id !== _id);
         
         return res.status(200).json({
             success:{message:"This will delete a book by it's id."},

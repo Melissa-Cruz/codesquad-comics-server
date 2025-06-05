@@ -1,8 +1,16 @@
+require("dotenv").config();
+
+//use the connection to the database
+require(".config/connection");
+//use the authentication strategies from different applications for sing sign on SSO 
+require("./config/authStrategy")
+
+
 // --------------------------INITIALIZE EXPRESS -----------------------------
 //require dependencies and set up express environment
 const express = require("express");
 const app = express();
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
 
 // --------------------------------MIDDLEWARE ------------------------------------
 
