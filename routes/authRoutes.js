@@ -5,7 +5,7 @@ const {
   login,
   logout,
   localLogin,
-} = require("../contollers/authController");
+} = require("../controllers/authController");
 
 router.post("/register", register);
 

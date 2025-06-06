@@ -1,7 +1,7 @@
 require("dotenv").config();
 
 //use the connection to the database
-require(".config/connection");
+require("./config/connection");
 //use the authentication strategies from different applications for sing sign on SSO 
 require("./config/authStrategy")
 
