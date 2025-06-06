@@ -23,9 +23,12 @@ const cors = require("cors");
 const path = require("node:path");
 
 // use the pacakages
-app.use(cors());
-app.use(morgan("combined"));
+
 app.use(helmet());
+app.use(morgan("combined"));
+app.use(cors({credentials:true, origin:true}));
+
+
 
 // Tell the app to use express to bundle all of the files within the  public directory
 app.use(express.static(path.join(__dirname + "/public")));
@@ -56,6 +59,26 @@ app.get("/", (request, response, next) => {
 });
 
 // Cut all of the routes that begin with /api/books from the app.js and move them to the bookRoutes.js file.
+
+//catch any errors before the app fully boots up 
+
+app.use((err, req, res, next)=>{
+  if(err.code==1100){
+    return res.status(err.status || 400).json({
+      error:{message:"Already have an account? Try logging in."}, 
+      statusCode:err.status || 400
+    });
+  }
+
+  return res.status(err.status||500).json({
+    error:{message:err.message || "Internal server error."}, 
+    statusCode:err.status||500,
+  }); 
+});
+
+
+
+
 
 //-----------------------------CONNECT THE APP TO THE PORT----------------------
 // use app.listen() to start the server and send a console.log to the terminal with a start message that says `The server is listening on port ${PORT}`
