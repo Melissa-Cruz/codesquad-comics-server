@@ -6,7 +6,7 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const User = require("../models/userModel");
 
 passport.use(
-    new LocalStratey ( async (username, password, done) =>{
+    new LocalStrategy ( async (username, password, done) =>{
         try{
             const user = await User.findOne({username});
 

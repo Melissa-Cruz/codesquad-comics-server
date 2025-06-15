@@ -48,7 +48,7 @@ const authRoutes = require("./routes/authRoutes");
 
 // Prepare the app file to move book routes into a new file
 app.use("/api/books", bookRoutes);
-app.use("/api", authRoutes);
+app.use("/auth", authRoutes);
 
 // Create six basic GET routes with the following information using the .send() method and the request/response/next parameter:
 
@@ -85,7 +85,7 @@ app.get("/", (request, response, next) => {
 //catch any errors before the app fully boots up 
 
 app.use((err, req, res, next)=>{
-  if(err.code==1100){
+  if(err.code==11000){
     return res.status(err.status || 400).json({
       error:{message:"Already have an account? Try logging in."}, 
       statusCode:err.status || 400

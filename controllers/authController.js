@@ -61,21 +61,25 @@ const login = async (req, res, next) => {
 };
 
 const logout = async (req, res, next) => {
-  if (err) {
+  req.logout((err)=>{
+    if (err) {
     return next(err);
-  }
+    }
 
-  console.log("Initializing logout controller logic...");
-  //destroy the session on logout so unauthorized calls will be blocked
-  sessionDestruction();
-  console.log("Session destroyed");
-  res.clearCookie("connect.sid");
+    req.session.destroy((err)=>{
+      if(err){
+        return next(err);
+      }
+    })
+    console.log("Session destroyed");
 
-  res.status(200).json({
-    success: { message: "User logging out" },
-    statusCode: 200,
-  });
-  console.log("Logout function activated. Logging out...");
+    res.clearCookie("connect.sid");
+    return res.status(200).json({
+      success:{ message:"User logged out"},
+      statusCode:200,
+    });
+  })
+
 };
 
 const localLogin = async (req, res, next) => {
@@ -89,7 +93,7 @@ const localLogin = async (req, res, next) => {
 
     if(!user){
       return res.status.json(401)({
-        success:{info.message}
+        error:{message: info.message}
       });
     }
     req.login(user, (err)=>{
