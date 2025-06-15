@@ -110,7 +110,7 @@ const localLogin = async (req, res, next) => {
       })
     });
 
-  })
+})
 
 };
 
