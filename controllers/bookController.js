@@ -12,7 +12,7 @@ const getAllBooks = async (req, res, next) => {
 
     return res.status(200).json({
       success: { message: "This will send all of the book data" },
-      data: { books: books },
+      data: { books },
       statusCode: 200,
     });
   } catch (error) {
@@ -38,7 +38,7 @@ const getBook = async (req, res, next) => {
 
     // Refactor the iterator that stores the foundBook, ex. (one) book after finding the matching _id value to use the findById method on the book Model, with the _id as the parameter
 
-    const book = Book.findById(_id);
+    const book = await Book.findOne(_id);
     // Book Check: if there is not an book found, we will use the throw command with a new Error constructor object, and a string that states: "Book not found"
 
     if(!book){

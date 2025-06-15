@@ -1,31 +1,55 @@
+const passport = require("passport");
+const bcrypt = require("bcrypt");
+
+const User = require("../models/userModel");
+const { rawListeners } = require("../models/bookModel");
+
 const register = async (req, res, next) => {
-  const { firstName, lastName, username, password } = req.body;
+  const { firstName, lastName, username, password, googleId, githubId } = req.body;
   console.log(register);
+
+  if(error){
+    return next(error);
+  }else if(!firstName||!username||!password){
+    return res.status(400).json({
+      error:{message:"Missing required fields."},
+      statusCode:400,
+    })
+  }
   try {
+    const hashedPassword = await bcrypt.hash(password,10)
     // Stage a newUser object to log when a user registers for the first time
     const newUser = {
       firstName: firstName,
       lastName: lastName,
       username: username,
-      password: password,
+      password: hashedPassword,
+      googleId:googleId,
+      githubId:githubId
     };
     // Send a simple log to confirm that code is operational. Copied from the slides but I do not understand.
 
-    console.log(
-      "Registration is sucessfull outisde of local authentication feature."
-    );
-    // left some stuff out from slides based on directions
+    await newUser.save();
+
+
+    req.login(newUser, (error) =>{
+      if(error){
+        return next(error);
+      }
+      newUser.password = undefined; 
 
     return res.status(201).json({
       success: { message: "New user is created" },
       data: { newUser },
       statusCode: 201,
     });
+
+    })
+ 
+
   } catch (error) {
-    return res.status(500).json({
-      error: { message: "Internal server error!" },
-      statusCode: 500,
-    });
+    return next(error);
+    ;
   }
 };
 
@@ -37,9 +61,13 @@ const login = async (req, res, next) => {
 };
 
 const logout = async (req, res, next) => {
+  if (err) {
+    return next(err);
+  }
+
   console.log("Initializing logout controller logic...");
   //destroy the session on logout so unauthorized calls will be blocked
-
+  sessionDestruction();
   console.log("Session destroyed");
   res.clearCookie("connect.sid");
 
@@ -47,34 +75,43 @@ const logout = async (req, res, next) => {
     success: { message: "User logging out" },
     statusCode: 200,
   });
-
-  function sessionDestruction(err) {
-    //error handling as a final check and a failsafe
-    if (err) {
-      return next(err);
-    }
-  }
-  sessionDestruction();
   console.log("Logout function activated. Logging out...");
 };
 
 const localLogin = async (req, res, next) => {
   let result = true;
 
-  function mockPassport(err, user) {
-    //error handling as a final check and a failsafe
+  passport.authenticate("local", (err, user,info)=>{
+       //error handling as a final check and a failsafe
     if (err) {
       return next(err);
     }
-  }
-  //call the mockPassport feature
-  mockPassport();
 
-  res.status(200).json({
-    success: { message: "Login successful." },
-    data: { result: result },
-    statusCode: 200,
-  });
+    if(!user){
+      return res.status.json(401)({
+        success:{info.message}
+      });
+    }
+    req.login(user, (err)=>{
+      if(err){
+        return next(err)
+      }
+      const userCopy = {...req.user._doc};
+      userCopy.password = undefined;
+
+      console.log(userCopy);
+
+
+      res.status(200).json({
+        success:{message:"Login successful within local authentication feature."}, 
+        data: {userCopy}, 
+        result:result,
+        statusCode:200,
+      })
+    });
+
+  })
+
 };
 
 module.exports = {register, login, logout, localLogin};
