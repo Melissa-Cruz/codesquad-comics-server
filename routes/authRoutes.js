@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const passport = require("passport");
+
 const {
   register,
   login,
@@ -11,13 +13,23 @@ router.post("/register", register);
 
 router.get("/login", login);
 
+router.get("/login/google",
+passport.authenticate("google", {scope:["profile", "email"]})
+);
+router.get("/auth/google/callback",
+  passport.authenticate("google",{
+    failureRedirect:"/login",
+    successRedirect:"dashboard",
+  })
+);
+
 router.get("/login/error", (req, res, next) => {
   return res.json("Login error");
 });
 
-router.get("/login/local", localLogin);
+router.post("/login/local", localLogin);
 
-router.get("/logout", logout);
+router.post("/logout", logout);
 
 router.get("/unauthenticated", (req, res, next) => {
   console.log("Returning to the homepage...");

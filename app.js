@@ -5,6 +5,9 @@ require("./config/connection");
 //use the authentication strategies from different applications for sing sign on SSO 
 require("./config/authStrategy")
 
+//make a comment that says session and passport here 
+const session = require("express-session");
+const passport = require("passport");
 
 // --------------------------INITIALIZE EXPRESS -----------------------------
 //require dependencies and set up express environment
@@ -24,7 +27,7 @@ const path = require("node:path");
 
 // use the pacakages
 
-app.use(helmet());
+app.use(helmet({ contentSecurityPolicy:false}));
 app.use(morgan("combined"));
 app.use(cors({credentials:true, origin:true}));
 
@@ -48,6 +51,25 @@ app.use("/api/books", bookRoutes);
 app.use("/api", authRoutes);
 
 // Create six basic GET routes with the following information using the .send() method and the request/response/next parameter:
+
+
+//session management login, signup, logout 
+app.use(
+  session({
+    resave:false, 
+    saveUninitialized:false,
+    secret:process.env.SECRET_KEY, 
+
+    cookie:{
+      httpOnly:true, 
+      secure:false, 
+      maxAge:1000*60*60*24,
+    }
+
+  })
+); 
+app.use(passport.initialize());
+app.use(passport.session());
 
 // PATH: /, HANDLER: "This route points to the Home page
 app.get("/", (request, response, next) => {
