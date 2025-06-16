@@ -10,7 +10,7 @@ const { getAllBooks, getBook, createBook, updateBook, deleteBook } = require("..
 router.get(("/"), getAllBooks);
 
 // PATH: /api/books/:id, HANDLER:  "This will send a single book by its id"
-router.get(("/:id"), getBook);
+router.get(("/:_id"), getBook);
 
 // PATH: /api/books/create/new, HANDLER: "This will create a new book"
 // it works if it's  router.get
@@ -18,11 +18,11 @@ router.post(("/create/new"), createBook );
 
 // PATH: /api/books/update/:id, HANDLER: "This will update a book by its id"
 // it works if its router.get
-router.put(("/edit/:id"),updateBook );
+router.put(("/edit/:_id"),updateBook );
 
 // PATH: /api/books/delete/:id, HANDLER: "This will delete a book by its id" 
 //it works if its router.delete
-router.delete(("/delete/:id"), deleteBook);
+router.delete(("/delete/:_id"), deleteBook);
 
 
 

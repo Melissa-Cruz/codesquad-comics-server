@@ -11,7 +11,12 @@ const {
 
 router.post("/register", register);
 
-router.get("/login", login);
+router.post("/login", 
+  passport.authenticate("local",{
+    failureRedirect:"/login/error",
+    failureMessage:true
+  }),
+  login);
 
 router.get("/login/google",
 passport.authenticate("google", {scope:["profile", "email"]})

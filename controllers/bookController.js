@@ -8,6 +8,7 @@ const getAllBooks = async (req, res, next) => {
 
   try {
     //the homework says to put it inside the try
+    console.log("in the try block")
     const books = await Book.find({});
 
     return res.status(200).json({
@@ -29,7 +30,8 @@ const getBook = async (req, res, next) => {
 
   try {
     // const book = Book.find((book) => book._id === _id);
-
+    console.log("running getbook function, right now inside the try bloc")
+    console.log(_id)
     // Perform ID Check: if there is not an Id found, we will use the throw command with a new Error constructor object, and a string that states: "Id is required"
 
     if(!_id){
@@ -38,7 +40,9 @@ const getBook = async (req, res, next) => {
 
     // Refactor the iterator that stores the foundBook, ex. (one) book after finding the matching _id value to use the findById method on the book Model, with the _id as the parameter
 
-    const book = await Book.findOne(_id);
+    // const book = await Book.findById(_id);
+    const book= await Book.findById(req.params._id);
+
     // Book Check: if there is not an book found, we will use the throw command with a new Error constructor object, and a string that states: "Book not found"
 
     if(!book){
@@ -69,7 +73,7 @@ const createBook = async (req, res, next) => {
 
 
       // Required Value Check from Model: if the required information (title, author, pages) are not present, we need to handle errors early before we proceed within our try statement.
-    if(!title || !author || !price || !starRating){
+    if(!title || !author || !pages){
       throw new Error("Missing required fields, please review.");
     }
 
@@ -110,6 +114,8 @@ const updateBook = async (req, res, next) => {
 
     try{
 
+
+      console.log("inside update book")
       // Required Value Check from Model: if the required information (title, author, pages) are not present, we need to handle errors early before we proceed within our try statement.
       if(!title || !author ||!pages){
         throw new Error("Missing required fields, please review.");
@@ -131,6 +137,19 @@ const updateBook = async (req, res, next) => {
       {new:true}
       );
 
+    //   const updatedBook = await Book.findByIdAndUpdate(req.params._id, 
+    //     { $set: { title, 
+    //        author, 
+    //        publisher,
+    //        genre, 
+    //        pages, 
+    //        rating, 
+    //        synopsis, 
+    //        imageUrl,
+    //    }
+    //  },
+    //  {new:true}
+    //  );
       //Update Book Check: if for some reason, the book was not updated (or can't be found), use the throw command with the new keyword on an Error constructor and write a message that says "Book not found".
       if(!updateBook){
         throw new Error("Book not found");

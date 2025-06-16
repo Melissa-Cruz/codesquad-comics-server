@@ -2,32 +2,42 @@ const passport = require("passport");
 const bcrypt = require("bcrypt");
 
 const User = require("../models/userModel");
-const { rawListeners } = require("../models/bookModel");
+// const { rawListeners } = require("../models/bookModel");
+const login = async (req, res, next) => {
+  res.status(200).json({
+    success: { message: "User logged in." },
+    statusCode: 200,
+  });
+};
 
 const register = async (req, res, next) => {
-  const { firstName, lastName, username, password, googleId, githubId } = req.body;
-  console.log(register);
+  console.log("register function is running");
 
-  if(error){
-    return next(error);
-  }else if(!firstName||!username||!password){
+  const { firstName, lastName, username, password, googleId, githubId } = req.body;
+  console.log(req.body);
+
+  console.log("here i am");
+  if(!firstName||!username||!password){
     return res.status(400).json({
       error:{message:"Missing required fields."},
       statusCode:400,
-    })
-  }
+    });
+  };
+
   try {
-    const hashedPassword = await bcrypt.hash(password,10)
+    console.log("in the try block before hashing the password");
+    const hashedPassword = await bcrypt.hash(password,10);
     // Stage a newUser object to log when a user registers for the first time
-    const newUser = {
+    const newUser = new User( {
       firstName: firstName,
       lastName: lastName,
       username: username,
       password: hashedPassword,
       googleId:googleId,
       githubId:githubId
-    };
+    });
     // Send a simple log to confirm that code is operational. Copied from the slides but I do not understand.
+    console.log("Registration is successful");
 
     await newUser.save();
 
@@ -53,12 +63,7 @@ const register = async (req, res, next) => {
   }
 };
 
-const login = async (req, res, next) => {
-  res.status(200).json({
-    success: { message: "User logged in." },
-    statusCode: 500,
-  });
-};
+
 
 const logout = async (req, res, next) => {
   req.logout((err)=>{
