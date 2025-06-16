@@ -9,6 +9,11 @@ require("./config/authStrategy")
 const session = require("express-session");
 const passport = require("passport");
 
+//Move routes before the app initialization
+const bookRoutes = require("./routes/bookRoutes");
+const authRoutes = require("./routes/authRoutes");
+
+
 // --------------------------INITIALIZE EXPRESS -----------------------------
 //require dependencies and set up express environment
 const express = require("express");
@@ -43,8 +48,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 ///-------------------------------SET UP GET ROUTES-------------------------
-const bookRoutes = require("./routes/bookRoutes");
-const authRoutes = require("./routes/authRoutes");
+
 
 // Prepare the app file to move book routes into a new file
 app.use("/api/books", bookRoutes);
@@ -68,6 +72,7 @@ app.use(
 
   })
 ); 
+
 app.use(passport.initialize());
 app.use(passport.session());
 
