@@ -29,12 +29,12 @@ const register = async (req, res, next) => {
     const hashedPassword = await bcrypt.hash(password,10);
     // Stage a newUser object to log when a user registers for the first time
     const newUser = new User( {
-      firstName: firstName,
-      lastName: lastName,
-      username: username,
+      firstName,
+      lastName,
+      username,
       password: hashedPassword,
-      googleId:googleId,
-      githubId:githubId
+      googleId,
+      githubId
     });
     // Send a simple log to confirm that code is operational. Copied from the slides but I do not understand.
     console.log("Registration is successful");
@@ -67,15 +67,16 @@ const register = async (req, res, next) => {
 
 const logout = async (req, res, next) => {
   console.log("logout function");
-  console.log(err);
-  req.logout((err)=>{
-    if (err) {
-    return next(err);
+  // console.log(err);
+
+  req.logout((error)=>{
+    if (error) {
+    return next(error);
     }
 
-    req.session.destroy((err)=>{
-      if(err){
-        return next(err);
+    req.session.destroy((error)=>{
+      if(error){
+        return next(error);
       }
     })
     console.log("Session destroyed");
@@ -85,17 +86,17 @@ const logout = async (req, res, next) => {
       success:{ message:"User logged out"},
       statusCode:200,
     });
-  })
+  });
 
 };
 
 const localLogin = async (req, res, next) => {
-  let result = true;
+  // let result = true;
 
-  passport.authenticate("local", (err, user,info)=>{
+  passport.authenticate("local", (error, user,info)=>{
        //error handling as a final check and a failsafe
-    if (err) {
-      return next(err);
+    if (error) {
+      return next(error);
     }
 
     if(!user){
@@ -103,9 +104,9 @@ const localLogin = async (req, res, next) => {
         error:{message: info.message}
       });
     }
-    req.login(user, (err)=>{
-      if(err){
-        return next(err)
+    req.login(user, (error)=>{
+      if(error){
+        return next(error)
       }
       const userCopy = {...req.user._doc};
       userCopy.password = undefined;
@@ -116,7 +117,7 @@ const localLogin = async (req, res, next) => {
       res.status(200).json({
         success:{message:"Login successful within local authentication feature."}, 
         data: {userCopy}, 
-        result:result,
+        // result:result,
         statusCode:200,
       })
     });

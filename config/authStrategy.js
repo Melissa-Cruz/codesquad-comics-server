@@ -38,10 +38,10 @@ passport.use(
     }, 
         async (accessToken,refreshToken, profile, done )=>{
             try{
-                const user = await User.findOneAndDelete({googleId:profileId});
+                const user = await User.findOneAndDelete({googleId:profile.id});
                 
                 if(user){
-                    return(done, user)
+                    return done (null, user)
 
                 }else{
                     const newUser = new User({
@@ -74,7 +74,7 @@ passport.serializeUser((user, done)=>{
 //user info that can be used within a request 
 passport.deserializeUser(async(id,done)=>{
     try{
-        const user = await user.findById(id);
+        const user = await User.findById(id);
 
         done(null,user);
     }catch(error){
