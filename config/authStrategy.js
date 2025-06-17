@@ -38,7 +38,7 @@ passport.use(
     }, 
         async (accessToken,refreshToken, profile, done )=>{
             try{
-                const user = await User.findOneAndDelete({googleId:profile.id});
+                const user = await User.findOne({googleId:profile.id});
                 
                 if(user){
                     return done (null, user)
