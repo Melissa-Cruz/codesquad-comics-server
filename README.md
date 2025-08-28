@@ -7,7 +7,8 @@
 
 <!-- Insert a project screenshot here -->
 
-This project has the back-end code using express.js and includes all the routing for the requests and the database connection. 
+This project has the back-end code using express.js and includes all the routing for the requests and the database connection. The  client side of the project shows a CRUD app for comic books. The client side is deployed with Netlify and the server side with Render. 
+
 
 ## Future Items 
  - adding authentication with Google
