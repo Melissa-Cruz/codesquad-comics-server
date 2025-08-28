@@ -5,7 +5,7 @@
 
 
 
-<!-- Insert a project screenshot here -->'
+<!-- Insert a project screenshot here -->
 
 This project has the back-end code using express.js and includes all the routing for the requests and the database connection. 
 
